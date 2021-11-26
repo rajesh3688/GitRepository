@@ -1,0 +1,3 @@
+module SeleniumSessions {
+	exports WebDriver;
+}

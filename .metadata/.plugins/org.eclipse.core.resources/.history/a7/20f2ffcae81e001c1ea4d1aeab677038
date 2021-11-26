@@ -1,0 +1,14 @@
+
+public class CompareIntegers {
+
+	public static void main(String[] args) {
+		
+		Integer i=100;
+		Integer j=100;
+		if(i==j) {
+			System.out.println("both are equal");
+		}else
+			System.out.println("both are not equal");
+	}
+
+}

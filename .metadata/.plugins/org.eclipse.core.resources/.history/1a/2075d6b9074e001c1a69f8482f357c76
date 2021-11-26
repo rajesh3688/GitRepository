@@ -1,0 +1,13 @@
+package stepDefinition;
+
+import cucumber.api.java.en.Given;
+
+public class LoginStepDefinition {
+	
+	@Given("^user is on login page$")
+	public void user_is_on_login_page() throws Throwable {
+	    // Write code here that turns the phrase above into concrete actions
+	    
+	}
+
+}
