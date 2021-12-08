@@ -26,7 +26,7 @@ public class Factorial {
 		return fact;
 	}
 	
-	
+	//using recursive function
 	public static int fact(int num)
 	{
 		if(num==0) {
