@@ -390,3 +390,369 @@ public class Demo{
 Output
 The missing element is : 101
 The new element in the list is : 67
+
+***************************************************************************************
+Exceptions and errors both are subclasses of Throwable class. The error indicates a problem that mainly occurs due to the lack of system resources and our application should not catch these types of problems.
+Some of the examples of errors are system crash error and out of memory error. Errors mostly occur at runtime that's they belong to an unchecked type. 
+
+Exceptions are the problems which can occur at runtime and compile time. 
+It mainly occurs in the code written by the developers.  
+Exceptions are divided into two categories such as checked exceptions and unchecked exceptions.
+
+Sr.No. Key	     Error	                                 Exception
+1      Type     Classified as an unchecked type      Classified as checked and unchecked
+ 
+
+ 
+2     Package   It belongs to java.lang.error        It belongs to java.lang.Exception
+ 
+ 
+ 
+3   Recoverable/Irrecoverable It is irrecoverable     It is recoverable
+
+
+
+4                      It can't be occur at compile time   It can occur at run time compile time both
+ 	 
+ 
+5  Example       OutOfMemoryError,IOError               NullPointerException , SqlException
+
+
+Example of Error
+
+public class ErrorExample {
+   public static void main(String[] args){
+      recursiveMethod(10)
+   }
+   public static void recursiveMethod(int i){
+      while(i!=0){
+         i=i+1;
+         recursiveMethod(i);
+      }
+   }
+}
+Output
+Exception in thread "main" java.lang.StackOverflowError
+
+
+Example of Exception
+
+public class ExceptionExample {
+   public static void main(String[] args){
+      int x = 100;
+      int y = 0;
+      int z = x / y;
+   }
+}
+Output
+java.lang.ArithmeticException: / by zero
+at ExceptionExample.main(ExceptionExample.java:7)
+   at ErrorExample.ErrorExample(Main.java:42)
+
+******************************************************************************
+What is Exception in Java?
+Dictionary Meaning: Exception is an abnormal condition.
+
+In Java, an exception is an event that disrupts the normal flow of the program. It is an object which is thrown at runtime.
+
+What is Exception Handling?
+Exception Handling is a mechanism to handle runtime errors such as ClassNotFoundException, IOException, SQLException, RemoteException, etc.
+
+Hierarchy of Java Exception classes
+The java.lang.Throwable class is the root class of Java Exception hierarchy inherited by two subclasses: Exception and Error. The hierarchy of Java Exception classes is given below:
+
+https://static.javatpoint.com/core/images/hierarchy-of-exception-handling.png
+
+Types of Java Exceptions
+There are mainly two types of exceptions: checked and unchecked. An error is considered as the unchecked exception. However, according to Oracle, there are three types of exceptions namely:
+
+Checked Exception
+Unchecked Exception
+Error
+
+Difference between Checked and Unchecked Exceptions
+1) Checked Exception
+The classes that directly inherit the Throwable class except RuntimeException and Error are known as checked exceptions. For example, IOException, SQLException, etc. Checked exceptions are checked at compile-time.
+
+2) Unchecked Exception
+The classes that inherit the RuntimeException are known as unchecked exceptions. For example, ArithmeticException, NullPointerException, ArrayIndexOutOfBoundsException, etc. Unchecked exceptions are not checked at compile-time, but they are checked at runtime.
+
+3) Error
+Error is irrecoverable. Some example of errors are OutOfMemoryError, VirtualMachineError, AssertionError etc.
+***************************************************************************************************************
+What are the maven plugins used?
+
+maven-clean-plugin
+maven-resources-plugin
+maven-compiler-plugin
+maven-surefire-plugin
+maven-jar-plugin
+maven-install-plugin
+maven-deploy-plugin
+maven-site-plugin
+maven-project-info-reports-plugin
+**********************************************************************************************
+what are the diff dependencies used in Maven POM?
+
+cucumber-java
+cucumber-junit
+cucumber-jvm-deps
+cucumber-reporting
+gherkin
+junit
+selenium-java
+   
+**********************************************************************************************
+what are various methods in webdriver?
+
+In Selenium WebDriver, we have an entirely different set of commands for performing different operations. Since we are using Selenium WebDriver with Java, commands are simply methods written in Java language.
+
+Note: A java method is a collection of statements that are grouped together to perform a specific operation.
+Before getting into the details of commands provided by Selenium WebDriver, 
+we insist you to go through the Java OOPs (Object-Oriented Programming) concepts in java programming language.
+
+https://static.javatpoint.com/tutorial/selenium/images/selenium-webdriver-commands2.png
+
+Method Name
+To access any method of any class, we need to create an object of class and then all the public methods will appear for the object.
+
+Parameter
+A parameter is an argument which is passed to a method to perform some specific operation.
+
+Return type
+Methods can return a value or returning nothing (void). If the void is mentioned after the method, it means, the method is returning no value. If it is returning a value, then it must display the type of the value for e.g. getTitle(): String.
+
+
+import org.openqa.selenium.By;  
+import org.openqa.selenium.WebDriver;  
+import org.openqa.selenium.firefox.FirefoxDriver;  
+import org.openqa.selenium.remote.DesiredCapabilities;  
+import org.openqa.selenium.support.ui.Select;  
+  
+public class Second {  
+  
+    public static void main(String[] args) {  
+          
+          // System Property for Gecko Driver   
+    System.setProperty("webdriver.gecko.driver","D:\\GeckoDriver\\geckodriver.exe" );  
+          
+         // Initialize Gecko Driver using Desired Capabilities Class  
+        DesiredCapabilities capabilities = DesiredCapabilities.firefox();  
+        capabilities.setCapability("marionette",true);  
+        WebDriver driver= new FirefoxDriver(capabilities);  
+          
+        // Launch Website  
+     driver.navigate().to("https://www.testandquiz.com/selenium/testing.html");  
+      
+        // Fetch the text "This is sample text." and print it on console  
+        // Use the class name of the div to locate it and then fetch text using getText() method  
+     String sampleText = driver.findElement(By.className("col-md-12")).getText();  
+     System.out.println(sampleText);  
+          
+          // Use the linkText locator method to find the link and perform click using click() method  
+     driver.findElement(By.linkText("This is a link")).click();  
+       
+          // Click on the textbox and send value  
+     driver.findElement(By.id("fname")).sendKeys("JavaTpoint");  
+       
+        // Clear the text written in the textbox  
+     driver.findElement(By.id("fname")).clear();  
+          
+        // Click on the Submit button using click() command  
+     driver.findElement(By.id("idOfButton")).click();  
+   
+        // Locate the radio button by id and check it using click() function  
+     driver.findElement(By.id("male")).click();  
+          
+        // Locate the checkbox by cssSelector and check it using click() function  
+     driver.findElement(By.cssSelector("input.Automation")).click();  
+              
+        // Use Select class for selecting value from dropdown  
+    Select dropdown = new Select(driver.findElement(By.id("testingDropdown")));  
+    dropdown.selectByVisibleText("Automation Testing");  
+       
+        // Close the Browser  
+             driver.close();  
+      
+    }  
+  
+}  
+ ***********************************************************************
+how does selenium interacts with browser?
+ 
+Selenium Script creates an HTTP Request for each selenium command and sends it to the browser driver.
+
+An HTTP request is then sent to the server using Browser Driver.
+
+The steps are executed on the HTTP server.
+
+The execution status is sent to the HTTP server which is then captured by the automation script.
+
+******************************************************************************
+
+An interface in Java is a blueprint of a class. It has static constants and abstract methods.
+
+The interface in Java is a mechanism to achieve abstraction
+. There can be only abstract methods in the Java interface, not method body.
+ It is used to achieve abstraction and multiple inheritance in Java
+.
+In other words, you can say that interfaces can have abstract methods and variables. It cannot have a method body.
+
+Java Interface also represents the IS-A relationship.
+
+It cannot be instantiated just like the abstract class.
+
+Since Java 8, we can have default and static methods in an interface.
+
+Since Java 9, we can have private methods in an interface.
+
+
+Why use Java interface?
+There are mainly three reasons to use interface. They are given below.
+
+It is used to achieve abstraction.
+By interface, we can support the functionality of multiple inheritance.
+It can be used to achieve loose coupling.
+
+The relationship between classes and interfaces
+As shown in the figure given below, a class extends another class, an interface extends another interface, but a class implements an interface.
+
+
+Multiple inheritance in Java by interface
+If a class implements multiple interfaces, or an interface extends multiple interfaces, it is known as multiple inheritance.
+
+*************************************************************************************************
+how to handle basic authentication pop up?
+
+We can handle authentication popup with Selenium. To do this, we have to pass the user credentials within the URL. 
+We shall have to add the username and password to the URL.
+
+
+Syntax:
+https://username:password@URL
+https://admin:admin@the−nternet.herokuapp.com/basic_auth
+
+Here, the admin is the username and password.
+URL − www.the-internet.herokuapp.com/basic_auth
+
+
+Example:
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+public class AuthnPopup{
+   public static void main(String[] args) {
+      System.setProperty("webdriver.chrome.driver",
+      "C:\\Users\\ghs6kor\\Desktop\\Java\\chromedriver.exe");
+      WebDriver driver = new ChromeDriver();
+      String u = "admin";
+      // adding username, password with URL
+      String str = "https://" + u + ":" + u + "@" +
+      "the-internet.herokuapp.com/basic_auth";
+      driver.get(str);
+      // identify and get text after authentication of popup
+      String t = driver.findElement(By.cssSelector("p")).getText();
+      System.out.println("Text is: " + t);
+      driver.quit();
+   }
+}
+*************************************************************************************************
+
+Diff between error,defect,bug and failure?
+
+What is a bug?
+In software testing, a bug is the informal name of defects, which means that software or application is not working as per the requirement. 
+When we have some coding error, it leads a program to its breakdown, which is known as a bug.
+The test engineers use the terminology Bug.
+
+What is a Defect?
+When the application is not working as per the requirement is knows as defects. It is specified as the aberration from the actual and expected result of the application or software.
+
+In other words, we can say that the bug announced by the programmer and inside the code is called a Defect.
+
+What is Error?
+The Problem in code leads to errors, which means that a mistake can occur due to the developer's coding error as the developer misunderstood the requirement or the requirement was not defined correctly. 
+The developers use the term error.
+
+An Error is a mistake made in the code; that's why we cannot execute or compile code.
+
+What is Fault?
+The fault may occur in software because it has not added the code for fault tolerance, making an application act up.
+
+The Fault is a state that causes the software to fail to accomplish its essential function.
+
+A fault may happen in a program because of the following reasons:
+
+Lack of resources
+An invalid step
+Inappropriate data definition
+
+
+What is Failure?
+Many defects lead to the software's failure, which means that a loss specifies a fatal issue in software/ application or in its module, which makes the system unresponsive or broken.
+
+In other words, we can say that if an end-user detects an issue in the product, then that particular issue is called a failure.
+
+Possibilities are there one defect that might lead to one failure or several failures.
+
+For example, in a bank application if the Amount Transfer module is not working for end-users when the end-user tries to transfer money, submit button is not working. Hence, this is a failure.
+
+If the software has lots of defects, it leads to failure or causes failure.
+
+
+*************************************************************************************************
+Write a Java program to check whether two strings are anagram or not?
+
+Two strings are called anagrams if they contain same set of characters but in different order.
+
+"keep ? peek", "Mother In Law - Hitler Woman".
+
+import java.util.Arrays;  
+   
+public class AnagramString {  
+    static void isAnagram(String str1, String str2) {  
+        String s1 = str1.replaceAll("\\s", "");  
+        String s2 = str2.replaceAll("\\s", "");  
+        boolean status = true;  
+        if (s1.length() != s2.length()) {  
+            status = false;  
+        } else {  
+            char[] ArrayS1 = s1.toLowerCase().toCharArray();  
+            char[] ArrayS2 = s2.toLowerCase().toCharArray();  
+            Arrays.sort(ArrayS1);  
+            Arrays.sort(ArrayS2);  
+            status = Arrays.equals(ArrayS1, ArrayS2);  
+        }  
+        if (status) {  
+            System.out.println(s1 + " and " + s2 + " are anagrams");  
+        } else {  
+            System.out.println(s1 + " and " + s2 + " are not anagrams");  
+        }  
+    }  
+   
+    public static void main(String[] args) {  
+        isAnagram("Keep", "Peek");  
+        isAnagram("Mother In Law", "Hitler Woman");  
+    }  
+}  
+
+Output
+
+Keep and Peek are anagrams
+MotherInLaw and HitlerWoman are anagrams
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
