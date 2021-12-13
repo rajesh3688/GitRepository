@@ -1,0 +1,1517 @@
+Definition: Selenium WebDriver is a collection of open source APIs which are used to automate the testing of a web application. 
+Selenium WebDriver is a web framework that permits you to execute cross-browser tests.
+Description: Selenium WebDriver tool is used to automate web application testing to verify that it works as expected.
+********************************************************
+WebDriver is class or interface?Interface
+
+************************************************************
+If you use ChromeDriver driver = new ChromeDriver(); the ChromeDriver instance which will get created through 
+that we will be only able to invoke and act on the methods implemented by ChromeDriver and supported by Chrome Browser only. 
+To act with other browsers we have to specifically create individual objects as below :
+
+FirefoxDriver driver =  new FirefoxDriver();
+InternetExplorerDriver driver = new InternetExplorerDriver();
+
+WebDriver driver = new ChromeDriver();
+Through WebDriver driver = new ChromeDriver(); we are creating an instance of the WebDriver interface and casting it to ChromeDriver class. All the browser drivers like:
+
+FirefoxDriver
+ChromeDriver
+InternetExplorerDriver
+PhantomJSDriver
+SafariDriver etc
+
+implemented the WebDriver interface
+
+So if we use WebDriver driver, then we can use the already initialized driver (as common object variable) for all browsers we want to automate e.g. Mozilla, Chrome, InternetExplorer, Edge, Opera, Safari as follows:
+WebDriver driver = new FirefoxDriver();
+// or
+WebDriver driver = new ChromeDriver();
+// or
+WebDriver driver = new InternetExplorerDriver();
+// or
+WebDriver driver = new EdgeDriver();
+// or
+WebDriver driver = new OperaDriver();
+// or
+WebDriver driver = new SafariDriver();
+*******************************************************************
+Most of the web applications are developed using Ajax and Javascript. When a page is loaded by the browser the elements which we want to interact with may load at different time intervals.
+
+Not only it makes this difficult to identify the element but also if the element is not located it will throw an “ElementNotVisibleException” exception. Using Selenium Waits, we can resolve this problem.
+
+Implicit Wait
+
+The Implicit Wait in Selenium is used to tell the web driver to wait for a certain amount of time before it throws a “No Such Element Exception”. The default setting is 0. Once we set the time, the web driver will wait for the element for that time before throwing an exception.
+
+Implicit Wait syntax:
+
+driver.manage().timeouts().implicitlyWait(TimeOut, TimeUnit.SECONDS);
+Implicit wait will accept 2 parameters, the first parameter will accept the time as an integer value and the second parameter will accept the time measurement in terms of SECONDS, MINUTES, MILISECOND, MICROSECONDS, NANOSECONDS, DAYS, HOURS, etc.
+
+
+Explicit Wait
+
+The Explicit Wait in Selenium is used to tell the Web Driver to wait for certain conditions (Expected Conditions) or maximum time exceeded before throwing “ElementNotVisibleException” exception. It is an intelligent kind of wait, but it can be applied only for specified elements.
+It gives better options than implicit wait as it waits for dynamically loaded Ajax elements.
+Once we declare explicit wait we have to use “ExpectedConditions” or we can configure how frequently we want to check the condition using Fluent Wait
+
+WebDriverWait wait=new WebDriverWait(driver, 20);
+WebElement guru99seleniumlink;
+	guru99seleniumlink= wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath( "/html/body/div[1]/section/div[2]/div/div[1]/div/div[1]/div/div/div/div[2]/div[2]/div/div/div/div/div[1]/div/div/a/i")));
+	guru99seleniumlink.click();
+	
+	The following are the Expected Conditions that can be used in Selenium Explicit Wait
+
+alertIsPresent()
+elementSelectionStateToBe()
+elementToBeClickable()
+elementToBeSelected()
+frameToBeAvaliableAndSwitchToIt()
+invisibilityOfTheElementLocated()
+invisibilityOfElementWithText()
+presenceOfAllElementsLocatedBy()
+presenceOfElementLocated()
+textToBePresentInElement()
+textToBePresentInElementLocated()
+textToBePresentInElementValue()
+titleIs()
+titleContains()
+visibilityOf()
+visibilityOfAllElements()
+visibilityOfAllElementsLocatedBy()
+visibilityOfElementLocated()
+
+The Fluent Wait in Selenium is used to define maximum time for the web driver to wait for a condition, as well as the frequency with which we want to check the condition before throwing an “ElementNotVisibleException” exception.
+It checks for the web element at regular intervals until the object is found or timeout happens.
+
+Let’s consider a scenario where an element is loaded at different intervals of time. 
+The element might load within 10 seconds, 20 seconds or even more then that if we declare an explicit wait of 20 seconds. 
+It will wait till the specified time before throwing an exception. In such scenarios, the fluent wait is the ideal wait to use as this will try to find the element at different frequency until it finds it or the final timer runs out.
+
+Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)							
+			.withTimeout(30, TimeUnit.SECONDS) 			
+			.pollingEvery(5, TimeUnit.SECONDS) 			
+			.ignoring(NoSuchElementException.class);
+			
+			Frequency is set to 5 seconds and the maximum time is set to 30 seconds. 
+			Thus this means that it will check for the element on the web page at every 5 seconds for the maximum time of 30 seconds. 
+			If the element is located within this time frame it will perform the operations else it will throw an” ElementNotVisibleException”
+	
+	Diffrences between Implicit and Explicit wait
+			
+			Implicit Wait	Explicit Wait
+Implicit Wait time is applied to all the elements in the script
+Explicit Wait time is applied only to those elements which are intended by us
+In Implicit Wait, we need not specify “ExpectedConditions” on the element to be located
+In Explicit Wait, we need to specify “ExpectedConditions” on the element to be located
+It is recommended to use when the elements are located with the time frame specified in Selenium implicit wait
+It is recommended to use when the elements are taking long time to load and also for verifying the property of the element like(visibilityOfElementLocated, elementToBeClickable,elementToBeSelected)
+
+*********************************************************************
+Program to display duplicate elements from selec dropdown
+
+Select s = new Select(driver.findElement(
+                By.xpath("//Select[@id='unmappedTech']")));
+        List<WebElement> list = s.getOptions();
+        Set<String> listNames = new HashSet<String>(list.size());
+        for (WebElement element : list) {
+           //Set will not allow to add duplicate value
+            if(listNames.add(element.getText())==false){
+                System.out.println("Duplicate value is: "+element.getText());
+            }
+        }
+        
+***************************************************************************
+
+how to run test in testng multiple times
+
+@Test(invocationCount = 100)
+
+public void testCount() {
+
+}
+
+
+
+/* Since Data provider for this test method returns 2D array of size 3x1, 
+this test method will run 3 times **automatically** with 1 parameter every time. */
+@Test(dataProvider="URLprovider")
+private void notePrice(String url) {
+    driver.get(url);
+    System.out.println(driver.getTitle());  
+}
+
+// It will return a 2D array of size 3x1
+@DataProvider(name="URLprovider")
+private Object[][] getURLs() {
+  return new Object[][] {
+    {"https://www.google.co.in/"},
+    {"http://www.gmail.com/"},
+    {"http://stackoverflow.com/"}
+  };
+}
+
+*************************************************************************************
+diff options available in TestRunner in Cucumber
+
+package cucumberTest;
+
+import org.junit.runner.RunWith;
+import cucumber.api.CucumberOptions;
+import cucumber.api.junit.Cucumber;
+
+@RunWith(Cucumber.class)
+@CucumberOptions(
+		features = "Feature"
+		,glue={"stepDefinition"}
+		)
+
+public class TestRunner {
+
+}
+
+
+Following Main Options are available in Cucumber:
+
+https://www.toolsqa.com/gallery/Cucumber/1.Cucumber%20Options.png
+
+Dry Run
+dryRun option can either set as true or false. If it is set as true, it means that Cucumber will only check that every Step mentioned in the Feature File has corresponding code written in Step Definition file or not. 
+So in case any of the functions are missed in the Step Definition for any Step in Feature File,
+ it will give us the message. For practice just add the code 'dryRun = true' in TestRunner class:
+ 
+ package cucumberTest;
+
+import org.junit.runner.RunWith;
+import cucumber.api.CucumberOptions;
+import cucumber.api.junit.Cucumber;
+
+@RunWith(Cucumber.class)
+@CucumberOptions(
+		features = "Feature"
+		,glue={"stepDefinition"}
+		,dryRun = true
+		)
+
+public class TestRunner {
+
+}
+
+Now give it a run by Right Click on TestRunner class and Click Run As  > JUnit Test. Cucumber will run the script and the result will be shown in the left-hand side project explorer window in JUnit tab.
+
+https://www.toolsqa.com/gallery/Cucumber/2.CucumberOptions_1.png
+
+Take a look at the time duration at the end of the every Steps, it is (0.000s). 
+It means none of the Step is executed but still, Cucumber has made sure that every Step has the corresponding method available in the Step Definition file. Give it a try,
+ remove the '@Given("^User is on Home Page$")' statement from the Test_Steps class and run the TestRunner class again.
+ 
+ You would get the following message:
+ https://www.toolsqa.com/gallery/Cucumber/3.CucumberOptions_6.png
+ 
+ 
+ Monochrome
+This option can either set as true or false. If it is set as true,
+ it means that the console output for the Cucumber test are much more readable. 
+ And if it is set as false, then the console output is not as readable as it should be. 
+ For practice just add the code 'monochrome = true' in TestRunner class:
+ 
+ package cucumberTest;
+
+import org.junit.runner.RunWith;
+import cucumber.api.CucumberOptions;
+import cucumber.api.junit.Cucumber;
+
+@RunWith(Cucumber.class)
+@CucumberOptions(
+		features = "Feature"
+		,glue={"stepDefinition"}
+		,monochrome = false
+		)
+
+public class TestRunner {
+
+}
+
+Now give it a run by Right Click on TestRunner class and Click Run As  > JUnit Test. Cucumber will run the script and Console Output will display like this:
+
+
+https://www.toolsqa.com/gallery/Cucumber/4.CucumberOptions_2.png
+
+Features Options helps Cucumber to locate the Feature file in the project folder structure. You must have notices that we have been specifying the Feature Option in the TestRunner class since the first chapter. All we need to do is to specify the folder path and Cucumber will automatically find all the '.features' extension files in the folder. It can be specified like:
+
+features = "Feature"
+
+Or if the Feature file is in the deep folder structure
+
+features = "src/test/features"
+
+https://www.toolsqa.com/gallery/Cucumber/6.CucumberOptions_4.png
+
+
+Glue
+It is almost the same think as Features Option but the only difference is that it helps Cucumber to locate the Step Definition file. Whenever Cucumber encounters a Step, it looks for a Step Definition inside all the files present in the folder mentioned in Glue Option. It can be specified like:
+
+glue = "stepDefinition"
+
+Or if the Step Definition file is in the deep folder structure
+
+glue = "src/test/stepDeinition"
+
+https://www.toolsqa.com/gallery/Cucumber/7.CucumberOptions_5.png
+
+
+Format
+Format Option is used to specify different formatting options for the output reports. Various options that can be used as for-matters are:
+
+Pretty: Prints the Gherkin source with additional colors and stack traces for errors. Use below code:
+
+format = {"pretty"}
+
+HTML: This will generate a HTML report at the location mentioned in the for-matter itself. Use below code:
+
+format = {"html:Folder_Name"}
+
+JSON: This report contains all the information from the gherkin source in JSON Format. This report is meant to be post-processed into another visual format by 3rd party tools such as Cucumber Jenkins. Use the below code:
+
+format = {"json:Folder_Name/cucumber.json"}
+
+JUnit: This report generates XML files just like Apache Ant’s JUnit report task. This XML format is understood by most Continuous Integration servers, who will use it to generate visual reports. use the below code:
+
+format = { "junit:Folder_Name/cucumber.xml"}
+
+***********************************************************
+
+what is staleelementexception?
+
+We can resolve StaleElementReferenceException in Selenium webdriver. The term stale means something which is not fresh and decayed. Thus a stale element points to an element which is not present any more.
+
+There may be a case, when an element was in DOM initially but after modifications in Document Object Model (DOM), the element becomes stale and the StaleElementReferenceException is thrown if we make an attempt to access this element.
+
+This exception is caused whenever an element is not present in the DOM, or deleted. We can handle this exception by the following ways −
+
+Refreshing the page and verifying again.
+
+Implement retry method.
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import java.util.concurrent.TimeUnit;
+public class StaleElmnt{
+   public static void main(String[] args) {
+      System.setProperty("webdriver.chrome.driver",
+      "C:\\Users\\ghs6kor\\Desktop\\Java\\chromedriver.exe");
+      WebDriver driver = new ChromeDriver();
+      driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+      driver.get("https://www.tutorialspoint.com/about/about_careers.htm");
+      // identify element
+      WebElement l = driver.findElement(By.id("gsc−i−id1"));
+      l.sendKeys("Selenium");
+      //refresh page
+      driver.navigate().refresh();
+      l.sendKeys("Selenium");
+      driver.quit();
+   }
+}
+
+O/P
+
+https://www.tutorialspoint.com/assets/questions/media/47743/dialog.jpg
+
+Code Implementation to fix the StaleElementException.
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import java.util.concurrent.TimeUnit;
+import org.openqa.selenium.StaleElementReferenceException;
+public class StaleElmntFix{
+   public static void main(String[] args) {
+      System.setProperty("webdriver.chrome.driver",
+      "C:\\Users\\ghs6kor\\Desktop\\Java\\chromedriver.exe");
+      WebDriver driver = new ChromeDriver();
+      driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+      driver.get("https://www.tutorialspoint.com/about/about_careers.htm");
+      // identify element
+      WebElement l = driver.findElement(By.id("gsc−i−id1"));
+      l.sendKeys("Selenium");
+      //refresh page
+      driver.navigate().refresh();
+      //fix exception with try−catch block
+      try{
+         l.sendKeys("Selenium");
+      }
+      catch(StaleElementReferenceException e){
+         l = driver.findElement(By.id("gsc−i−id1"));
+         l.sendKeys("Selenium");
+         //obtain value entered
+         String s= l.getAttribute("value");
+         System.out.println("Value entered is: " +s);
+      }
+      driver.quit();
+   }
+}
+Output
+
+https://www.tutorialspoint.com/assets/questions/media/47743/enter.jpg
+
+******************************************************************************
+
+how to find missing element using collection?
+
+import java.util.*;
+public class Demo{
+   public static void main(String[] args){
+      List my_list_1 = new ArrayList();
+      List my_list_2 = new ArrayList();
+      my_list_1.add(new Integer("101"));
+      my_list_1.add(new Integer("90"));
+      my_list_1.add(new Integer("34"));
+      my_list_2.add(new Integer("34"));
+      my_list_2.add(new Integer("67"));
+      my_list_2.add(new Integer("90"));
+      for(int i = 0; i < my_list_1.size(); i++){
+         if (my_list_2.contains(my_list_1.get(i)))
+         continue;
+            else
+         System.out.println("The missing element is : "+my_list_1.get(i));
+      }
+      for(int j=0; j<my_list_2.size();j++){
+         if (my_list_1.contains(my_list_2.get(j)))
+         continue;
+            else
+         System.out.println("The new element in the list is : "+my_list_2.get(j));
+      }
+   }
+}
+Output
+The missing element is : 101
+The new element in the list is : 67
+
+***************************************************************************************
+Exceptions and errors both are subclasses of Throwable class. The error indicates a problem that mainly occurs due to the lack of system resources and our application should not catch these types of problems.
+Some of the examples of errors are system crash error and out of memory error. Errors mostly occur at runtime that's they belong to an unchecked type. 
+
+Exceptions are the problems which can occur at runtime and compile time. 
+It mainly occurs in the code written by the developers.  
+Exceptions are divided into two categories such as checked exceptions and unchecked exceptions.
+
+Sr.No. Key	     Error	                                 Exception
+1      Type     Classified as an unchecked type      Classified as checked and unchecked
+ 
+
+ 
+2     Package   It belongs to java.lang.error        It belongs to java.lang.Exception
+ 
+ 
+ 
+3   Recoverable/Irrecoverable It is irrecoverable     It is recoverable
+
+
+
+4                      It can't be occur at compile time   It can occur at run time compile time both
+ 	 
+ 
+5  Example       OutOfMemoryError,IOError               NullPointerException , SqlException
+
+
+Example of Error
+
+public class ErrorExample {
+   public static void main(String[] args){
+      recursiveMethod(10)
+   }
+   public static void recursiveMethod(int i){
+      while(i!=0){
+         i=i+1;
+         recursiveMethod(i);
+      }
+   }
+}
+Output
+Exception in thread "main" java.lang.StackOverflowError
+
+
+Example of Exception
+
+public class ExceptionExample {
+   public static void main(String[] args){
+      int x = 100;
+      int y = 0;
+      int z = x / y;
+   }
+}
+Output
+java.lang.ArithmeticException: / by zero
+at ExceptionExample.main(ExceptionExample.java:7)
+   at ErrorExample.ErrorExample(Main.java:42)
+
+******************************************************************************
+What is Exception in Java?
+Dictionary Meaning: Exception is an abnormal condition.
+
+In Java, an exception is an event that disrupts the normal flow of the program. It is an object which is thrown at runtime.
+
+What is Exception Handling?
+Exception Handling is a mechanism to handle runtime errors such as ClassNotFoundException, IOException, SQLException, RemoteException, etc.
+
+Hierarchy of Java Exception classes
+The java.lang.Throwable class is the root class of Java Exception hierarchy inherited by two subclasses: Exception and Error. The hierarchy of Java Exception classes is given below:
+
+https://static.javatpoint.com/core/images/hierarchy-of-exception-handling.png
+
+Types of Java Exceptions
+There are mainly two types of exceptions: checked and unchecked. An error is considered as the unchecked exception. However, according to Oracle, there are three types of exceptions namely:
+
+Checked Exception
+Unchecked Exception
+Error
+
+Difference between Checked and Unchecked Exceptions
+1) Checked Exception
+The classes that directly inherit the Throwable class except RuntimeException and Error are known as checked exceptions. For example, IOException, SQLException, etc. Checked exceptions are checked at compile-time.
+
+2) Unchecked Exception
+The classes that inherit the RuntimeException are known as unchecked exceptions. For example, ArithmeticException, NullPointerException, ArrayIndexOutOfBoundsException, etc. Unchecked exceptions are not checked at compile-time, but they are checked at runtime.
+
+3) Error
+Error is irrecoverable. Some example of errors are OutOfMemoryError, VirtualMachineError, AssertionError etc.
+***************************************************************************************************************
+What are the maven plugins used?
+
+maven-clean-plugin
+maven-resources-plugin
+maven-compiler-plugin
+maven-surefire-plugin
+maven-jar-plugin
+maven-install-plugin
+maven-deploy-plugin
+maven-site-plugin
+maven-project-info-reports-plugin
+**********************************************************************************************
+what are the diff dependencies used in Maven POM?
+
+cucumber-java
+cucumber-junit
+cucumber-jvm-deps
+cucumber-reporting
+gherkin
+junit
+selenium-java
+   
+**********************************************************************************************
+what are various methods in webdriver?
+
+In Selenium WebDriver, we have an entirely different set of commands for performing different operations. Since we are using Selenium WebDriver with Java, commands are simply methods written in Java language.
+
+Note: A java method is a collection of statements that are grouped together to perform a specific operation.
+Before getting into the details of commands provided by Selenium WebDriver, 
+we insist you to go through the Java OOPs (Object-Oriented Programming) concepts in java programming language.
+
+https://static.javatpoint.com/tutorial/selenium/images/selenium-webdriver-commands2.png
+
+Method Name
+To access any method of any class, we need to create an object of class and then all the public methods will appear for the object.
+
+Parameter
+A parameter is an argument which is passed to a method to perform some specific operation.
+
+Return type
+Methods can return a value or returning nothing (void). If the void is mentioned after the method, it means, the method is returning no value. If it is returning a value, then it must display the type of the value for e.g. getTitle(): String.
+
+
+import org.openqa.selenium.By;  
+import org.openqa.selenium.WebDriver;  
+import org.openqa.selenium.firefox.FirefoxDriver;  
+import org.openqa.selenium.remote.DesiredCapabilities;  
+import org.openqa.selenium.support.ui.Select;  
+  
+public class Second {  
+  
+    public static void main(String[] args) {  
+          
+          // System Property for Gecko Driver   
+    System.setProperty("webdriver.gecko.driver","D:\\GeckoDriver\\geckodriver.exe" );  
+          
+         // Initialize Gecko Driver using Desired Capabilities Class  
+        DesiredCapabilities capabilities = DesiredCapabilities.firefox();  
+        capabilities.setCapability("marionette",true);  
+        WebDriver driver= new FirefoxDriver(capabilities);  
+          
+        // Launch Website  
+     driver.navigate().to("https://www.testandquiz.com/selenium/testing.html");  
+      
+        // Fetch the text "This is sample text." and print it on console  
+        // Use the class name of the div to locate it and then fetch text using getText() method  
+     String sampleText = driver.findElement(By.className("col-md-12")).getText();  
+     System.out.println(sampleText);  
+          
+          // Use the linkText locator method to find the link and perform click using click() method  
+     driver.findElement(By.linkText("This is a link")).click();  
+       
+          // Click on the textbox and send value  
+     driver.findElement(By.id("fname")).sendKeys("JavaTpoint");  
+       
+        // Clear the text written in the textbox  
+     driver.findElement(By.id("fname")).clear();  
+          
+        // Click on the Submit button using click() command  
+     driver.findElement(By.id("idOfButton")).click();  
+   
+        // Locate the radio button by id and check it using click() function  
+     driver.findElement(By.id("male")).click();  
+          
+        // Locate the checkbox by cssSelector and check it using click() function  
+     driver.findElement(By.cssSelector("input.Automation")).click();  
+              
+        // Use Select class for selecting value from dropdown  
+    Select dropdown = new Select(driver.findElement(By.id("testingDropdown")));  
+    dropdown.selectByVisibleText("Automation Testing");  
+       
+        // Close the Browser  
+             driver.close();  
+      
+    }  
+  
+}  
+ ***********************************************************************
+how does selenium interacts with browser?
+ 
+Selenium Script creates an HTTP Request for each selenium command and sends it to the browser driver.
+
+An HTTP request is then sent to the server using Browser Driver.
+
+The steps are executed on the HTTP server.
+
+The execution status is sent to the HTTP server which is then captured by the automation script.
+
+******************************************************************************
+
+An interface in Java is a blueprint of a class. It has static constants and abstract methods.
+
+The interface in Java is a mechanism to achieve abstraction
+. There can be only abstract methods in the Java interface, not method body.
+ It is used to achieve abstraction and multiple inheritance in Java
+.
+In other words, you can say that interfaces can have abstract methods and variables. It cannot have a method body.
+
+Java Interface also represents the IS-A relationship.
+
+It cannot be instantiated just like the abstract class.
+
+Since Java 8, we can have default and static methods in an interface.
+
+Since Java 9, we can have private methods in an interface.
+
+
+Why use Java interface?
+There are mainly three reasons to use interface. They are given below.
+
+It is used to achieve abstraction.
+By interface, we can support the functionality of multiple inheritance.
+It can be used to achieve loose coupling.
+
+The relationship between classes and interfaces
+As shown in the figure given below, a class extends another class, an interface extends another interface, but a class implements an interface.
+
+
+Multiple inheritance in Java by interface
+If a class implements multiple interfaces, or an interface extends multiple interfaces, it is known as multiple inheritance.
+
+*************************************************************************************************
+how to handle basic authentication pop up?
+
+We can handle authentication popup with Selenium. To do this, we have to pass the user credentials within the URL. 
+We shall have to add the username and password to the URL.
+
+
+Syntax:
+https://username:password@URL
+https://admin:admin@the−nternet.herokuapp.com/basic_auth
+
+Here, the admin is the username and password.
+URL − www.the-internet.herokuapp.com/basic_auth
+
+
+Example:
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+public class AuthnPopup{
+   public static void main(String[] args) {
+      System.setProperty("webdriver.chrome.driver",
+      "C:\\Users\\ghs6kor\\Desktop\\Java\\chromedriver.exe");
+      WebDriver driver = new ChromeDriver();
+      String u = "admin";
+      // adding username, password with URL
+      String str = "https://" + u + ":" + u + "@" +
+      "the-internet.herokuapp.com/basic_auth";
+      driver.get(str);
+      // identify and get text after authentication of popup
+      String t = driver.findElement(By.cssSelector("p")).getText();
+      System.out.println("Text is: " + t);
+      driver.quit();
+   }
+}
+*************************************************************************************************
+
+Diff between error,defect,bug and failure?
+
+What is a bug?
+In software testing, a bug is the informal name of defects, which means that software or application is not working as per the requirement. 
+When we have some coding error, it leads a program to its breakdown, which is known as a bug.
+The test engineers use the terminology Bug.
+
+What is a Defect?
+When the application is not working as per the requirement is knows as defects. It is specified as the aberration from the actual and expected result of the application or software.
+
+In other words, we can say that the bug announced by the programmer and inside the code is called a Defect.
+
+What is Error?
+The Problem in code leads to errors, which means that a mistake can occur due to the developer's coding error as the developer misunderstood the requirement or the requirement was not defined correctly. 
+The developers use the term error.
+
+An Error is a mistake made in the code; that's why we cannot execute or compile code.
+
+What is Fault?
+The fault may occur in software because it has not added the code for fault tolerance, making an application act up.
+
+The Fault is a state that causes the software to fail to accomplish its essential function.
+
+A fault may happen in a program because of the following reasons:
+
+Lack of resources
+An invalid step
+Inappropriate data definition
+
+
+What is Failure?
+Many defects lead to the software's failure, which means that a loss specifies a fatal issue in software/ application or in its module, which makes the system unresponsive or broken.
+
+In other words, we can say that if an end-user detects an issue in the product, then that particular issue is called a failure.
+
+Possibilities are there one defect that might lead to one failure or several failures.
+
+For example, in a bank application if the Amount Transfer module is not working for end-users when the end-user tries to transfer money, submit button is not working. Hence, this is a failure.
+
+If the software has lots of defects, it leads to failure or causes failure.
+
+
+*************************************************************************************************
+Write a Java program to check whether two strings are anagram or not?
+
+Two strings are called anagrams if they contain same set of characters but in different order.
+
+"keep ? peek", "Mother In Law - Hitler Woman".
+
+import java.util.Arrays;  
+   
+public class AnagramString {  
+    static void isAnagram(String str1, String str2) {  
+        String s1 = str1.replaceAll("\\s", "");  
+        String s2 = str2.replaceAll("\\s", "");  
+        boolean status = true;  
+        if (s1.length() != s2.length()) {  
+            status = false;  
+        } else {  
+            char[] ArrayS1 = s1.toLowerCase().toCharArray();  
+            char[] ArrayS2 = s2.toLowerCase().toCharArray();  
+            Arrays.sort(ArrayS1);  
+            Arrays.sort(ArrayS2);  
+            status = Arrays.equals(ArrayS1, ArrayS2);  
+        }  
+        if (status) {  
+            System.out.println(s1 + " and " + s2 + " are anagrams");  
+        } else {  
+            System.out.println(s1 + " and " + s2 + " are not anagrams");  
+        }  
+    }  
+   
+    public static void main(String[] args) {  
+        isAnagram("Keep", "Peek");  
+        isAnagram("Mother In Law", "Hitler Woman");  
+    }  
+}  
+
+Output
+
+Keep and Peek are anagrams
+MotherInLaw and HitlerWoman are anagrams
+***********************************************************************
+diff between get and navigate?
+
+
+sl.no.   get()                                                                                   navigate()
+1      It is responsible for loading the page and waits until the page has finished loading.   It is only responsible for redirecting the page and then returning immediately.
+
+2	   It cannot track the history of the browser.                                             It tracks the browser history and can perform back and forth in the browser
+
+
+Example
+
+Get
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import java.util.concurrent.TimeUnit;
+import java.util.List;
+public class LaunchBrw {
+   public static void main(String[] args) {
+      System.setProperty("webdriver.chrome.driver", "C:\\Users\\ghs6kor\\Desktop\\Java\\chromedriver.exe");
+      WebDriver driver = new ChromeDriver();
+      String url = "https://www.tutorialspoint.com/index.htm";
+      driver.get(url);
+      driver.manage().timeouts().implicitlyWait(12, TimeUnit.SECONDS);
+      driver.close();
+   }
+}
+
+
+Example
+
+Navigate
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import java.util.concurrent.TimeUnit;
+import java.util.List;
+public class BrowserNavigation {
+   public static void main(String[] args) {
+      System.setProperty("webdriver.chrome.driver", "C:\\Users\\ghs6kor\\Desktop\\Java\\chromedriver.exe");
+      WebDriver driver = new ChromeDriver();
+      String url = "https://www.tutorialspoint.com/index.htm";
+      // new browser will launch and navigate to the URL
+      driver.navigate().to(url);
+      driver.manage().timeouts().implicitlyWait(12, TimeUnit.SECONDS);
+      // refresh the current browser
+      driver.navigate().refresh();
+      //Using id tagname attribute combination for css expression
+      driver.findElement(By.cssSelector("input[name=’search’]")). sendKeys("Selenium");
+      //browser will go back to the previous page
+      driver.navigate().back();
+      //browser will go move to the next page
+      driver.navigate().forward();
+      driver.close();
+   }
+}
+
+
+**************************************************************************
+
+Can we declare multiple catch blocks inside try block?
+
+Yes, we can define one try block with multiple catch blocks in Java.
+
+Every try should and must be associated with at least one catch block.
+Whenever an exception object is identified in a try block and if there are multiple catch blocks then the priority for the catch block would be given based on the order in which catch blocks are have been defined.
+Highest priority would be always given to first catch block. If the first catch block cannot handle the identified exception object then it considers the immediate next catch block.
+
+Example
+
+class TryWithMultipleCatch {
+   public static void main(String args[]) {
+      try{
+         int a[]=new int[5];
+         a[3]=10/0;
+         System.out.println("First print statement in try block");
+      } catch(ArithmeticException e) {
+         System.out.println("Warning: ArithmeticException");
+      } catch(ArrayIndexOutOfBoundsException e) {
+         System.out.println("Warning: ArrayIndexOutOfBoundsException");
+      } catch(Exception e) {
+         System.out.println("Warning: Some Other exception");
+      }
+      System.out.println("Out of try-catch block");
+   }
+}
+Output
+Warning: ArithmeticException
+Out of try-catch block
+
+****************************************************************************************************
+
+what are checked and unchecked exceptions in java?
+
+1) Checked Exception
+The classes that directly inherit the Throwable class except RuntimeException and Error are known as checked exceptions. For example, IOException, SQLException, etc. Checked exceptions are checked at compile-time.
+
+2) Unchecked Exception
+The classes that inherit the RuntimeException are known as unchecked exceptions. For example, ArithmeticException, NullPointerException, ArrayIndexOutOfBoundsException, etc. Unchecked exceptions are not checked at compile-time, but they are checked at runtime.
+
+
+Common Scenarios of Java Exceptions
+There are given some scenarios where unchecked exceptions may occur. They are as follows:
+
+1) A scenario where ArithmeticException occurs
+If we divide any number by zero, there occurs an ArithmeticException.
+
+int a=50/0;//ArithmeticException  
+
+2) A scenario where NullPointerException occurs
+If we have a null value in any variable, performing any operation on the variable throws a NullPointerException.
+
+String s=null;  
+System.out.println(s.length());//NullPointerException  
+
+3) A scenario where NumberFormatException occurs
+If the formatting of any variable or number is mismatched, it may result into NumberFormatException. Suppose we have a string variable that has characters; converting this variable into digit will cause NumberFormatException.
+
+String s="abc";  
+int i=Integer.parseInt(s);//NumberFormatException
+  
+4) A scenario where ArrayIndexOutOfBoundsException occurs
+When an array exceeds to it's size, the ArrayIndexOutOfBoundsException occurs. there may be other reasons to occur ArrayIndexOutOfBoundsException. Consider the following statements.
+
+int a[]=new int[5];  
+a[10]=50; //ArrayIndexOutOfBoundsException  
+
+
+***********************************************************************************************
+
+Diff between list and set?
+
+S.No	List	                                                                   Set
+1.	The list implementation allows us to add the same or duplicate elements.	The set implementation doesn't allow us to add the same or duplicate elements.
+2.	The insertion order is maintained by the List.	                            It doesn't maintain the insertion order of elements.
+3.	List allows us to add any number of null values.	                         Set allows us to add at least one null value in it.
+4.	The List implementation classes are LinkedList and ArrayList.	             The Set implementation classes are TreeSet, HashSet and LinkedHashSet.
+5.	We can get the element of a specified index from the list using the get() method.	We cannot find the element from the Set based on the index because it doesn't provide any get method().
+6.	It is used when we want to frequently access the elements by using the index.	It is used when we want to design a collection of distinct elements.
+7.	The method of List interface listiterator() is used to iterate the List elements.	The iterator is used when we need to iterate the Set elements.
+
+******************************************************************************************************
+
+Diff between xpath and css selector?
+
+Both xpath and css are one the most frequently used locators in Selenium. Though there are other locators like id, name, classname, tagname, and link text and so on, xpath and css are used when there are no unique attributes available to identify the elements.
+
+There are some differences between xpath and css listed below −
+
+Xpath allows bidirectional flow which means the traversal can be both ways from parent to child and child to parent as well. Css allows only one directional flow which means the traversal is from parent to child only.
+
+Xpath is slower in terms of performance and speed. Css has better performance and speed than xpath.
+
+Xpath allows identification with the help of visible text appearing on screen with the help of text() function. Css does not have this feature.
+
+Customized css can be created directly with the help of attributes id and class. For id, the css expression is represented by # followed by the id [ #<<id expression>>. 
+For class, the css expression is represented by . followed by the class [.<<class expression>>]. Xpath does not have any feature like this.
+
+Xpath expression is represented by [//tagname[@attribute = 'value']. The css expression is repression is represented by [tagname[attribute = 'value'].
+
+There are two types of xpath – absolute and relative. But css has no such types.
+
+Example
+Code Implementation with css.
+
+from selenium import webdriver
+#browser exposes an executable file
+#Through Selenium test we will invoke the executable file which will then #invoke actual browser
+driver = webdriver.Chrome(executable_path="C:\\chromedriver.exe")
+# to maximize the browser window
+driver.maximize_window()
+#get method to launch the URL
+driver.get("https://www.tutorialspoint.com/index.htm")
+#to refresh the browser
+driver.refresh()
+# identifying the edit box with the help of css driver. find_element_by_css_selector("input[class='gsc-input']").
+send_keys("Selenium")
+#to close the browser
+driver.close()
+
+
+Code Implementation with xpath
+
+from selenium import webdriver
+#browser exposes an executable file
+#Through Selenium test we will invoke the executable file which will then #invoke actual browser
+driver = webdriver.Chrome(executable_path="C:\\chromedriver.exe")
+# to maximize the browser window
+driver.maximize_window()
+#get method to launch the URL
+driver.get("https://www.tutorialspoint.com/index.htm")
+#to refresh the browser
+driver.refresh()
+# identifying the edit box with the help of xpath
+driver. find_element_by_xpath("//input[@class='gsc-input']").
+send_keys("Selenium")
+#to close the browser
+driver.close()
+
+********************************************************************************
+
+various functions in xpath?
+
+What are XPath Functions in Selenium?
+XPath Contains() function
+XPath Starts-with() function
+XPath Text() function
+AND & OR operators
+
+Sometimes while working in a dynamic web environment, it becomes challenging to locate a particular web element by using general attributes such as name, class, etc. 
+Several different elements may have similar properties, for example, similar names or class names. 
+Even the simple XPath strategies we discussed in the previous chapter may not be very efficient, as in such a case, 
+a simple XPath may return more than one element. To overcome such scenarios, XPath in Selenium offers XPath functions that can write effective XPaths to identify elements uniquely. Let's understand what XPath provides all different functions in Selenium, 
+which helps in uniquely locating a web element:
+
+Xpath Contains() function
+XPath Contains() is one of the methods used while creating an XPath expression. We can use it if part of the value of any attribute changes dynamically. It can identify any attribute by using its partial value. The syntax for using the XPath contains() method is:
+
+//tag_name[contains(@attribute,'value_of_attribute')]
+where the contains() method accepts two parameters:
+
+The attribute of the tag which needs to validate for locating the web element.
+The Partial value of the attribute, which the attribute should contain.
+Let’s look at an example on page "https://demoqa.com/text-box", where we will try to find the element using partial attribute value. Here we are trying to locate the textbox of Full Name, as highlighted below:
+
+https://www.toolsqa.com/gallery/selnium%20webdriver/1.XPath%20contains()%20function%20in%20Selenium.png
+
+Let's look at the DOM of the element.
+
+<input autocomplete="off" placeholder="Full Name" type="text" id="userName" class=" mr-sm-2 form-control">
+
+Here, we have an “id ” attribute with value as “username”. Instead of using the complete value “username”, we can use a part of the value and use it with contains() to identify the element.
+
+So, the XPath that can locate the element will be:
+
+//input[contains(@id, "userN")]
+Here we have used “userN ” as partial value. We can use any part of the attribute value that seems to appropriate.
+
+Similarly, we can also write XPath of the Email textbox. The DOM of this element is:
+
+<input autocomplete="off" placeholder="name@example.com" type="email" id="userEmail" class="mr-sm-2 form-control">
+
+We can use any of the attributes for element identification. For example, here, let us take placeholder as an attribute to identify the element. So, the XPath  will be:
+
+//input[contains(@placeholder, "example")]
+So this way, we can locate any of the web elements by using the partial validation of the attributes. This approach becomes very handy when the attributes of the web element change at run time by keeping a part of the attribute static.
+
+XPath Starts-with() function
+The XPath starts-with() function, as the name suggests, finds the element which has attribute value starting with the specific given character or character sequence. 
+This function is quite useful while dealing with dynamic web pages. Imagine an element that has an attribute value that keeps on changing with every page load or page operation.
+ Usually, these dynamic elements have few common starting characters, followed by random dynamic texts. Apart from the dynamic attribute, this can also identify static elements.
+
+Syntax of the starts-with() method for XPath is:
+
+//tag_name[starts-with(@attribute,'Part_of_Attribute_value')]
+
+where the starts-with() method accepts two parameters:
+
+The attribute of the tag which needs to validate for locating the web element.
+The Partial value of the attribute, which we expect from the attribute to start.
+Let’s have a look at an example on page "https://demoqa.com/text=box", where we will consider the element “Full Name” and try to locate it using XPath:
+
+https://www.toolsqa.com/gallery/selnium%20webdriver/2.starts-with()%20function.png
+
+Xpath Example:
+
+If we look at the DOM of the web element, it is:
+
+<input autocomplete="off" placeholder="Full Name" type="text" id="userName" class=" mr-sm-2 form-control">
+
+So the XPath Expression for the following element using starts-with() function will be:
+
+//input[starts-with(@placeholder,"Fu")]
+Here we have used the ‘placeholder ’ attribute to identify the textbox element. So, the actual placeholder value for the element is “Full Name”, but with the starts-with() function, we can use the starting few characters to recognize the element.
+
+XPath Text() function
+This function uses the text of the web element for locating the element on the webpage. This function is quite useful if your element contains the text, for example, labels, which always contain a static text.
+
+The syntax of the text() function in XPath  is:
+
+//tag_name[text()='Text of the element']
+where the text() method returns the text of the web element identified by the tag_name, and it compares the value with the string provided on the right side.
+
+Let's have a look at the webpage "https://demoqa.com/text-box" and try to locate the “Email ” label using text() function.
+
+https://www.toolsqa.com/gallery/selnium%20webdriver/3.Text()%20function.png
+
+Here as we can see, the DOM structure of the element is:
+
+<label class="form-label" id="userEmail-label">Email</label>
+Xpath Example:
+
+We will be using the text present in the UI for recognizing the element. The text on the UI is “Email”, and the same is present between element tag, i.e., <label> ….</label>
+
+So the XPath Expression for the label element will be:
+
+//label[text()=”Email”]
+
+Here we directly used the text present on the web page to identify the element instead of using the attribute and values to recognize the same.
+
+AND & OR operators
+The "and " operator is used to combining two different conditions or attributes to identify any element from a webpage using XPath efficiently. For example, if we have two attributes, a and b, we can combine both to uniquely identify an element on the webpage using the "and " operator.
+
+The syntax for using the “and ” operator is:
+
+//tag_name[@name = 'Name value' and @id = ‘ID value’]
+Here, we are using name and id attribute; you can use any attribute required to identify the element uniquely.
+
+The "or " operator is used to locate an element based on any of the conditions segregated by the "or " operator. We use it majorly based on certain run-time conditions. The attributes of the element can contain any of the values, so putting a condition with "or " will ensure that the element is locatable with any one of those conditions.
+
+The syntax for using the “or ” operator is:
+
+//tag_name[@name = 'Name value' or @id = ‘ID value’]
+So, if any one of the conditions is true, the XPath will locate the element successfully.
+
+Let's try to understand the same with the help of an example on the web page "https://demoqa.com/text-box".
+
+Here we want to identify and locate the element “Full Name ” using both AND & OR operators.
+
+https://www.toolsqa.com/gallery/selnium%20webdriver/4.AND%20operator.png
+
+XPath using AND operator:
+
+//input[@placeholder ='Full Name' and @type = 'text']
+Here, we have combined placeholder and type attributes to locate the element. Both the conditions, i.e., the attribute values, must be available to locate the element.
+
+XPath using OR operator:
+
+//input[@placeholder ='Full Name' or @type = 'text']
+In this example, we have used attribute placeholder and type with ‘or ’ operator. Here either placeholder or type attribute needs to match with the element property present on the webpage.
+If any of the conditions (attribute) meet, then XPath will locate the element.
+
+***************************************************************************************
+
+Diff between Hashmap and treemap?
+
+HashMap
+HashMap implements Map<K, V>, Cloneable and Serializable interface. It extends AbstractMap<K, V> class. It belongs to java.util package.
+
+HashMap contains value based on the key.
+It may have a single null key and multiple null values.
+HashMap does not maintain order while iterating.
+It contains unique elements.
+It works on the principle of hashing.
+
+TreeMap
+TreeMap class extends AbstractMap<K, V> class and implements NavigableMap<K, V >, Cloneable, and Serializable interface. TreeMap is an example of a SortedMap. 
+It is implemented by the Red-Black tree, which means that the order of the keys is sorted.
+
+TreeMap also contains value based on the key.
+TreeMap is sorted by keys.
+It contains unique elements.
+It cannot have a null key but have multiple null values.
+Keys are in ascending order.
+It stores the object in the tree structure.
+
+************************************************************************************
+
+What is Static in java?
+
+The static keyword in Java is used for memory management mainly. We can apply static keyword with variables, methods, blocks and nested classes.
+The static keyword belongs to the class than an instance of the class.
+
+The static can be:
+
+Variable (also known as a class variable)
+Method (also known as a class method)
+Block
+Nested class
+
+Java static variable
+If you declare any variable as static, it is known as a static variable.
+
+The static variable can be used to refer to the common property of all objects (which is not unique for each object), for example, the company name of employees, college name of students, etc.
+The static variable gets memory only once in the class area at the time of class loading.
+
+Advantages of static variable
+It makes your program memory efficient (i.e., it saves memory).
+
+Understanding the problem without static variable
+class Student{  
+     int rollno;  
+     String name;  
+     String college="ITS";  
+}  
+Suppose there are 500 students in my college, now all instance data members will get memory each time when the object is created. 
+All students have its unique rollno and name, so instance data member is good in such case. Here, "college" refers to the common property of all objects. 
+If we make it static, this field will get the memory only once.
+
+Java static property is shared to all objects.
+
+Example of static variable
+//Java Program to demonstrate the use of static variable  
+class Student{  
+   int rollno;//instance variable  
+   String name;  
+   static String college ="ITS";//static variable  
+   //constructor  
+   Student(int r, String n){  
+   rollno = r;  
+   name = n;  
+   }  
+   //method to display the values  
+   void display (){System.out.println(rollno+" "+name+" "+college);}  
+}  
+//Test class to show the values of objects  
+public class TestStaticVariable1{  
+ public static void main(String args[]){  
+ Student s1 = new Student(111,"Karan");  
+ Student s2 = new Student(222,"Aryan");  
+ //we can change the college of all objects by the single line of code  
+ //Student.college="BBDIT";  
+ s1.display();  
+ s2.display();  
+ }  
+}  
+Test it Now
+Output:
+
+111 Karan ITS
+222 Aryan ITS
+
+https://static.javatpoint.com/images/staticvariable.JPG
+
+Restrictions for the static method
+There are two main restrictions for the static method. They are:
+
+
+The static method can not use non static data member or call non-static method directly.
+this and super cannot be used in static context.
+
+Q) Why is the Java main method static?
+Ans) It is because the object is not required to call a static method. 
+If it were a non-static method, JVM creates an object first then call main() method that will lead the problem of extra memory allocation.
+
+
+Q) Can we execute a program without main() method?
+Ans) No, one of the ways was the static block, but it was possible till JDK 1.6. Since JDK 1.7, it is not possible to execute a Java class without the main method.
+
+class A3{  
+  static{  
+  System.out.println("static block is invoked");  
+  System.exit(0);  
+  }  
+}  
+
+***************************************************************************************************
+
+how to retrieve text present on an image?
+
+Firstly WebDriver does not support the functionality of extracting text from an image , at least as of now  :) .
+So if we would like to extract and verify text from an image then we should use OCR (Optical Character Recognition) technology.
+
+Coming to OCR , here is one of the nice article , and it says :
+
+OCR software extracts all the information from the image into easily editable text format.Optical character recognition (OCR) is a system of converting scanned printed/handwritten image files into its machine readable text format.
+
+Download "Asprise OCR" libraries , depending on the operating system you are using .
+Unzip the downloaded  folder and add the aspriseOCR jar file to your working directory . If you want you can download the single jar file from here .
+Also Copy the "AspriseOCR.dll" file from unzipped downloaded folder and save it  under "C:\Windows\System32" .
+
+
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import javax.imageio.ImageIO;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+import com.asprise.util.ocr.OCR;
+
+public class ExtractImage {
+ WebDriver driver;
+ @BeforeTest
+  public void setUpDriver() {
+   driver = new FirefoxDriver();
+  }
+ @Test
+ public void start() throws IOException{
+   
+ /*Navigate to http://www.mythoughts.co.in/2013/10/extract-and-verify-text-from-image.html page
+  * and get the image source attribute
+  *  
+  */  
+ driver.get("http://www.mythoughts.co.in/2013/10/extract-and-verify-text-from-image.html");
+ String imageUrl=driver.findElement(By.xpath("//*[@id='post-body-5614451749129773593']/div[1]/div[1]/div/a/img")).getAttribute("src");
+ System.out.println("Image source path : \n"+ imageUrl);
+
+ URL url = new URL(imageUrl);
+ Image image = ImageIO.read(url);
+ String s = new OCR().recognizeCharacters((RenderedImage) image);
+ System.out.println("Text From Image : \n"+ s);
+ System.out.println("Length of total text : \n"+ s.length());
+ driver.quit();
+    
+ /* Use below code If you want to read image location from your hard disk   
+  *   
+   BufferedImage image = ImageIO.read(new File("Image location"));   
+   String imageText = new OCR().recognizeCharacters((RenderedImage) image);  
+   System.out.println("Text From Image : \n"+ imageText);  
+   System.out.println("Length of total text : \n"+ imageText.length());   
+      
+   */ 
+}
+
+}
+
+
+Here is the output of the above program:
+
+Image source path :
+http://2.bp.blogspot.com/-42SgMHAeF8U/Uk8QlYCoy-I/AAAAAAAADSA/TTAVAAgDhio/s1600/love.jpg
+
+Never M2suse the O, ne
+Who Likes You
+Never Say Busy To Th,e One
+Who Needs You
+Never cheat The One
+Who ReaZZy Trust You,
+Never foJnget The One
+Who Zways Remember You.
+
+Length of total text :
+175
+
+****************************************************************************************************
+
+
+No.	String	                                                             StringBuffer
+1)	The String class is immutable.	                                   The StringBuffer class is mutable.
+2)	String is slow and consumes more memory when we concatenate too
+ many strings because every time it creates new instance.	           StringBuffer is fast and consumes less memory when we concatenate t strings.
+3)	String class overrides the equals() method of Object class. 
+So you can compare the contents of two strings by equals() method.	   StringBuffer class doesn't override the equals() method of Object class.
+4)	String class is slower while performing concatenation operation.	StringBuffer class is faster while performing concatenation operation.
+5)	String class uses String constant pool.	                            StringBuffer uses Heap memory  
+
+
+
+No.	StringBuffer	                                                         StringBuilder
+1)	StringBuffer is synchronized i.e. thread safe. 
+It means two threads can't call the methods of StringBuffer simultaneously	StringBuilder is non-synchronized i.e. not thread safe. It means two threads can call the methods of StringBuilder simultaneously.
+2)	StringBuffer is less efficient than StringBuilder.	                     StringBuilder is more efficient than StringBuffer.
+3)	StringBuffer was introduced in Java 1.0	                                   StringBuilder was introduced in Java 1.5
+
+
+Performance Test of String and StringBuffer
+
+public class ConcatTest{  
+    public static String concatWithString()    {  
+        String t = "Java";  
+        for (int i=0; i<10000; i++){  
+            t = t + "Tpoint";  
+        }  
+        return t;  
+    }  
+    public static String concatWithStringBuffer(){  
+        StringBuffer sb = new StringBuffer("Java");  
+        for (int i=0; i<10000; i++){  
+            sb.append("Tpoint");  
+        }  
+        return sb.toString();  
+    }  
+    public static void main(String[] args){  
+        long startTime = System.currentTimeMillis();  
+        concatWithString();  
+        System.out.println("Time taken by Concating with String: "+(System.currentTimeMillis()-startTime)+"ms");  
+        startTime = System.currentTimeMillis();  
+        concatWithStringBuffer();  
+        System.out.println("Time taken by Concating with  StringBuffer: "+(System.currentTimeMillis()-startTime)+"ms");  
+    }  
+}  
+Output:
+
+Time taken by Concating with String: 578ms
+Time taken by Concating with  StringBuffer: 0ms
+
+Difference between StringBuffer and StringBuilder
+Java provides three classes to represent a sequence of characters: String, StringBuffer, and StringBuilder.
+ The String class is an immutable class whereas StringBuffer and StringBuilder classes are mutable.
+ 
+//Java Program to demonstrate the use of StringBuffer class.  
+public class BufferTest{  
+    public static void main(String[] args){  
+        StringBuffer buffer=new StringBuffer("hello");  
+        buffer.append("java");  
+        System.out.println(buffer);  
+    }  
+}  
+Output:
+
+hellojava
+
+StringBuilder Example
+BuilderTest.java
+
+//Java Program to demonstrate the use of StringBuilder class.  
+public class BuilderTest{  
+    public static void main(String[] args){  
+        StringBuilder builder=new StringBuilder("hello");  
+        builder.append("java");  
+        System.out.println(builder);  
+    }  
+}  
+Output:
+
+hellojava
+
+Performance Test of StringBuffer and StringBuilder
+
+ConcatTest.java
+
+//Java Program to demonstrate the performance of StringBuffer and StringBuilder classes.  
+public class ConcatTest{  
+    public static void main(String[] args){  
+        long startTime = System.currentTimeMillis();  
+        StringBuffer sb = new StringBuffer("Java");  
+        for (int i=0; i<10000; i++){  
+            sb.append("Tpoint");  
+        }  
+        System.out.println("Time taken by StringBuffer: " + (System.currentTimeMillis() - startTime) + "ms");  
+        startTime = System.currentTimeMillis();  
+        StringBuilder sb2 = new StringBuilder("Java");  
+        for (int i=0; i<10000; i++){  
+            sb2.append("Tpoint");  
+        }  
+        System.out.println("Time taken by StringBuilder: " + (System.currentTimeMillis() - startTime) + "ms");  
+    }  
+}  
+Output:
+
+Time taken by StringBuffer: 16ms
+Time taken by StringBuilder: 0ms
+
+********************************************************************************************
+
+Difference between HashMap and Hashtable
+
+HashMap and Hashtable both are used to store data in key and value form. Both are using hashing technique to store unique keys.
+
+
+          HashMap	                                                                                                 Hashtable
+1) HashMap is non synchronized. 
+It is not-thread safe and can't be shared between many threads without proper synchronization code.	             Hashtable is synchronized. It is thread-safe and can be shared with many threads.
+2) HashMap allows one null key and multiple null values.	                                                     Hashtable doesn't allow any null key or value.
+3) HashMap is a new class introduced in JDK 1.2.	                                                             Hashtable is a legacy class.
+4) HashMap is fast.	                                                                                             Hashtable is slow.
+5) We can make the HashMap as synchronized by calling this code
+Map m = Collections.synchronizedMap(hashMap);	                                                                  Hashtable is internally synchronized and can't be unsynchronized.
+6) HashMap is traversed by Iterator.	                                                                          Hashtable is traversed by Enumerator and Iterator.
+7) Iterator in HashMap is fail-fast.	                                                                          Enumerator in Hashtable is not fail-fast.
+8) HashMap inherits AbstractMap class.	                                                                          Hashtable inherits Dictionary class.
+
+**************************************************************************************************
+
+Diff waits in selenium?
+
+https://static.javatpoint.com/tutorial/selenium/images/selenium-waits2.png
+
+Implicit Waits
+The main function of implicit Wait is to tell the web driver to wait for some time before throwing a "No Such Element Exception". 
+Its default setting is knocked at zero. Once the time is set, the driver automatically will wait for the amount of time defined by you before throwing the above-given exception.
+
+Syntax:
+
+driver.manage().timeouts().implicitlyWait(TimeOut,   
+TimeUnit.SECONDS);  
+
+System.setProperty("webdriver.chrome.driver", "C:Selenium-java-  
+javaTpointchromedriver_win32chromedriver.exe");  
+WebDriver driver = new ChromeDriver();  
+driver.manage().window().maximize();  
+driver.manage().deleteAllCookies();  
+driver.manage().timeouts().pageLoadTimeout(40,   
+TimeUnit.SECONDS); // pageload timeout  
+driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);      
+// Implicit Wait for 20 seconds  
+driver.get("https://login.google.com/");  
+driver.findElement(By.xpath("//input[@id='login-  
+username']")).sendKeys("JavaTpoint.com"); //Finding element and   
+sending values  
+Thread.sleep(1000);  
+driver.findElement(By.xpath("//input[@id='login-signin']")).click(); //Clicking on the next button if element is located  
+
+Note: Implicit Wait is globally applied. It is readily available for driver instance. It also means that if the driver is having interaction with One thousand elements in the meantime, the implicit Wait will be applicable only for those 1000 elements. 
+It cannot go beyond that.
+
+Explicit Waits
+
+Syntax:
+
+WebDriverWait wait=new   
+ebDriverWait(WebDriveReference,TimeOut);  
+
+System.setProperty("webdriver.chrome.driver", "C:Selenium-java-  
+javatpointchromedriver_win32chromedriver.exe");  
+WebDriver driver = new ChromeDriver();  
+driver.manage().window().maximize();  
+driver.manage().deleteAllCookies();  
+driver.manage().timeouts().pageLoadTimeout(40,   
+TimeUnit.SECONDS);  
+driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);  
+driver.get("https://www.facebook.com/");  
+WebElement firstname= driver.findElement(By.name("firstname"));  
+WebElement lastname= driver.findElement(By.name("lastname"));  
+sendKeys(driver, firstname, 10, "Edureka");  
+sendKeys(driver, lastname, 20, "Edureka");  
+WebElement forgotAccount=   
+driver.findElement(By.linkText("Forgotten account?"));  
+clickOn(driver,forgotAccount, 10);  
+driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);  
+}  
+public static void sendKeys(WebDriver driver1, WebElement element,   
+int timeout, String value){  
+new WebDriverWait(driver1,   
+timeout).until(ExpectedConditions.visibilityOf(element));  
+element.sendKeys(value);  
+}  
+public static void clickOn(WebDriver driver1, WebElement element,   
+int timeout)  
+{  
+new WebDriverWait(driver1,   
+timeout).until(ExpectedConditions.elementToBeClickable(element));  
+element.click();  
+}  
+
+Fluent Wait
+Fluent Wait is quite similar to explicit Wait. It is similar in terms of management and functioning. In Fluent Wait, you can perform wait for action for an element only when you are unaware of the time it might take to be clickable or visible.
+
+Syntax:
+
+ Wait<WebDriver> fluentWait = new FluentWait<WebDriver>(driver)  
+       .withTimeout(60, SECONDS) // this defines the total amount of   
+time to wait for  
+       .pollingEvery(2, SECONDS) // this defines the polling frequency  
+       .ignoring(NoSuchElementException.class); // this defines the   
+exception to ignore   
+      WebElement foo = fluentWait.until(new Function<WebDriver,   
+WebElement>()  
+ {  
+     public WebElement apply(WebDriver driver)  //in this method   
+defined your own subjected conditions for which we need to wait for  
+     {  return driver.findElement(By.id("foo"));  
+}});  
+
+In the above code snippet, you can observe that the fluent Wait has been set for the timeout of 60 seconds, and the frequency is kept at 2 seconds by "NoSuchElementException".
+In another instance, a new function to identify the web element on the former page is created. 
+If the element to found to fall in the same time frame, it may perform all the operations. If for some reason, any error shoots up, the function returns "ElementNotVisibleException"
+
+*********************************************************************************************************
+
+diff between Assert and Verify?
+
+sl.no.	Assert      Verify
+1	Verifies if the specified condition is true and false.        
+ If the result is true, the next test step will be executed. 
+ In case of false condition, the execution would terminate.
+                                                                                 Verifies if the specified condition is true and false. If the result is true, the next test step will be executed. In case of false condition, the execution would still continue.
+2	In case of false condition, the next text case of the suite will be executed.
+In case of false condition, the next test step of the same text case will continue.
+3	There are two types of assets namely hard and soft asserts.
+There are no categories for verification.  

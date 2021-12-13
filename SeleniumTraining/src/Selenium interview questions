@@ -1279,4 +1279,412 @@ Length of total text :
 175
 
 ****************************************************************************************************
+
+
+No.	String	                                                             StringBuffer
+1)	The String class is immutable.	                                   The StringBuffer class is mutable.
+2)	String is slow and consumes more memory when we concatenate too
+ many strings because every time it creates new instance.	           StringBuffer is fast and consumes less memory when we concatenate t strings.
+3)	String class overrides the equals() method of Object class. 
+So you can compare the contents of two strings by equals() method.	   StringBuffer class doesn't override the equals() method of Object class.
+4)	String class is slower while performing concatenation operation.	StringBuffer class is faster while performing concatenation operation.
+5)	String class uses String constant pool.	                            StringBuffer uses Heap memory  
+
+
+
+No.	StringBuffer	                                                         StringBuilder
+1)	StringBuffer is synchronized i.e. thread safe. 
+It means two threads can't call the methods of StringBuffer simultaneously	StringBuilder is non-synchronized i.e. not thread safe. It means two threads can call the methods of StringBuilder simultaneously.
+2)	StringBuffer is less efficient than StringBuilder.	                     StringBuilder is more efficient than StringBuffer.
+3)	StringBuffer was introduced in Java 1.0	                                   StringBuilder was introduced in Java 1.5
+
+
+Performance Test of String and StringBuffer
+
+public class ConcatTest{  
+    public static String concatWithString()    {  
+        String t = "Java";  
+        for (int i=0; i<10000; i++){  
+            t = t + "Tpoint";  
+        }  
+        return t;  
+    }  
+    public static String concatWithStringBuffer(){  
+        StringBuffer sb = new StringBuffer("Java");  
+        for (int i=0; i<10000; i++){  
+            sb.append("Tpoint");  
+        }  
+        return sb.toString();  
+    }  
+    public static void main(String[] args){  
+        long startTime = System.currentTimeMillis();  
+        concatWithString();  
+        System.out.println("Time taken by Concating with String: "+(System.currentTimeMillis()-startTime)+"ms");  
+        startTime = System.currentTimeMillis();  
+        concatWithStringBuffer();  
+        System.out.println("Time taken by Concating with  StringBuffer: "+(System.currentTimeMillis()-startTime)+"ms");  
+    }  
+}  
+Output:
+
+Time taken by Concating with String: 578ms
+Time taken by Concating with  StringBuffer: 0ms
+
+Difference between StringBuffer and StringBuilder
+Java provides three classes to represent a sequence of characters: String, StringBuffer, and StringBuilder.
+ The String class is an immutable class whereas StringBuffer and StringBuilder classes are mutable.
+ 
+//Java Program to demonstrate the use of StringBuffer class.  
+public class BufferTest{  
+    public static void main(String[] args){  
+        StringBuffer buffer=new StringBuffer("hello");  
+        buffer.append("java");  
+        System.out.println(buffer);  
+    }  
+}  
+Output:
+
+hellojava
+
+StringBuilder Example
+BuilderTest.java
+
+//Java Program to demonstrate the use of StringBuilder class.  
+public class BuilderTest{  
+    public static void main(String[] args){  
+        StringBuilder builder=new StringBuilder("hello");  
+        builder.append("java");  
+        System.out.println(builder);  
+    }  
+}  
+Output:
+
+hellojava
+
+Performance Test of StringBuffer and StringBuilder
+
+ConcatTest.java
+
+//Java Program to demonstrate the performance of StringBuffer and StringBuilder classes.  
+public class ConcatTest{  
+    public static void main(String[] args){  
+        long startTime = System.currentTimeMillis();  
+        StringBuffer sb = new StringBuffer("Java");  
+        for (int i=0; i<10000; i++){  
+            sb.append("Tpoint");  
+        }  
+        System.out.println("Time taken by StringBuffer: " + (System.currentTimeMillis() - startTime) + "ms");  
+        startTime = System.currentTimeMillis();  
+        StringBuilder sb2 = new StringBuilder("Java");  
+        for (int i=0; i<10000; i++){  
+            sb2.append("Tpoint");  
+        }  
+        System.out.println("Time taken by StringBuilder: " + (System.currentTimeMillis() - startTime) + "ms");  
+    }  
+}  
+Output:
+
+Time taken by StringBuffer: 16ms
+Time taken by StringBuilder: 0ms
+
+********************************************************************************************
+
+Difference between HashMap and Hashtable
+
+HashMap and Hashtable both are used to store data in key and value form. Both are using hashing technique to store unique keys.
+
+
+          HashMap	                                                                                                 Hashtable
+1) HashMap is non synchronized. 
+It is not-thread safe and can't be shared between many threads without proper synchronization code.	             Hashtable is synchronized. It is thread-safe and can be shared with many threads.
+2) HashMap allows one null key and multiple null values.	                                                     Hashtable doesn't allow any null key or value.
+3) HashMap is a new class introduced in JDK 1.2.	                                                             Hashtable is a legacy class.
+4) HashMap is fast.	                                                                                             Hashtable is slow.
+5) We can make the HashMap as synchronized by calling this code
+Map m = Collections.synchronizedMap(hashMap);	                                                                  Hashtable is internally synchronized and can't be unsynchronized.
+6) HashMap is traversed by Iterator.	                                                                          Hashtable is traversed by Enumerator and Iterator.
+7) Iterator in HashMap is fail-fast.	                                                                          Enumerator in Hashtable is not fail-fast.
+8) HashMap inherits AbstractMap class.	                                                                          Hashtable inherits Dictionary class.
+
+**************************************************************************************************
+
+Diff waits in selenium?
+
+https://static.javatpoint.com/tutorial/selenium/images/selenium-waits2.png
+
+Implicit Waits
+The main function of implicit Wait is to tell the web driver to wait for some time before throwing a "No Such Element Exception". 
+Its default setting is knocked at zero. Once the time is set, the driver automatically will wait for the amount of time defined by you before throwing the above-given exception.
+
+Syntax:
+
+driver.manage().timeouts().implicitlyWait(TimeOut,   
+TimeUnit.SECONDS);  
+
+System.setProperty("webdriver.chrome.driver", "C:Selenium-java-  
+javaTpointchromedriver_win32chromedriver.exe");  
+WebDriver driver = new ChromeDriver();  
+driver.manage().window().maximize();  
+driver.manage().deleteAllCookies();  
+driver.manage().timeouts().pageLoadTimeout(40,   
+TimeUnit.SECONDS); // pageload timeout  
+driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);      
+// Implicit Wait for 20 seconds  
+driver.get("https://login.google.com/");  
+driver.findElement(By.xpath("//input[@id='login-  
+username']")).sendKeys("JavaTpoint.com"); //Finding element and   
+sending values  
+Thread.sleep(1000);  
+driver.findElement(By.xpath("//input[@id='login-signin']")).click(); //Clicking on the next button if element is located  
+
+Note: Implicit Wait is globally applied. It is readily available for driver instance. It also means that if the driver is having interaction with One thousand elements in the meantime, the implicit Wait will be applicable only for those 1000 elements. 
+It cannot go beyond that.
+
+Explicit Waits
+
+Syntax:
+
+WebDriverWait wait=new   
+ebDriverWait(WebDriveReference,TimeOut);  
+
+System.setProperty("webdriver.chrome.driver", "C:Selenium-java-  
+javatpointchromedriver_win32chromedriver.exe");  
+WebDriver driver = new ChromeDriver();  
+driver.manage().window().maximize();  
+driver.manage().deleteAllCookies();  
+driver.manage().timeouts().pageLoadTimeout(40,   
+TimeUnit.SECONDS);  
+driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);  
+driver.get("https://www.facebook.com/");  
+WebElement firstname= driver.findElement(By.name("firstname"));  
+WebElement lastname= driver.findElement(By.name("lastname"));  
+sendKeys(driver, firstname, 10, "Edureka");  
+sendKeys(driver, lastname, 20, "Edureka");  
+WebElement forgotAccount=   
+driver.findElement(By.linkText("Forgotten account?"));  
+clickOn(driver,forgotAccount, 10);  
+driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);  
+}  
+public static void sendKeys(WebDriver driver1, WebElement element,   
+int timeout, String value){  
+new WebDriverWait(driver1,   
+timeout).until(ExpectedConditions.visibilityOf(element));  
+element.sendKeys(value);  
+}  
+public static void clickOn(WebDriver driver1, WebElement element,   
+int timeout)  
+{  
+new WebDriverWait(driver1,   
+timeout).until(ExpectedConditions.elementToBeClickable(element));  
+element.click();  
+}  
+
+Fluent Wait
+Fluent Wait is quite similar to explicit Wait. It is similar in terms of management and functioning. In Fluent Wait, you can perform wait for action for an element only when you are unaware of the time it might take to be clickable or visible.
+
+Syntax:
+
+ Wait<WebDriver> fluentWait = new FluentWait<WebDriver>(driver)  
+       .withTimeout(60, SECONDS) // this defines the total amount of   
+time to wait for  
+       .pollingEvery(2, SECONDS) // this defines the polling frequency  
+       .ignoring(NoSuchElementException.class); // this defines the   
+exception to ignore   
+      WebElement foo = fluentWait.until(new Function<WebDriver,   
+WebElement>()  
+ {  
+     public WebElement apply(WebDriver driver)  //in this method   
+defined your own subjected conditions for which we need to wait for  
+     {  return driver.findElement(By.id("foo"));  
+}});  
+
+In the above code snippet, you can observe that the fluent Wait has been set for the timeout of 60 seconds, and the frequency is kept at 2 seconds by "NoSuchElementException".
+In another instance, a new function to identify the web element on the former page is created. 
+If the element to found to fall in the same time frame, it may perform all the operations. If for some reason, any error shoots up, the function returns "ElementNotVisibleException"
+
+*********************************************************************************************************
+
+diff between Assert and Verify?
+
+sl.no.	Assert                                                                     Verify
+1	Verifies if the specified condition is true and false.                        Verifies if the specified condition is true and false. If the result is true, the next test step will be executed. 
+                                                                                   In case of false condition, the execution would still continue.
+ If the result is true, the next test step will be executed. 
+ In case of false condition, the execution would terminate.
+                                                                                   
+2	In case of false condition, the next text case of the suite will be executed.  In case of false condition, the next test step of the same text case will continue.
+3	There are two types of assets namely hard and soft asserts.                    There are no categories for verification.  
+                                                                              
+**************************************************************************************************************
+ Garbage collector memoery?
+ 
+ Garbage Collection is process of reclaiming the runtime unused memory automatically.
+  In other words, it is a way to destroy the unused objects.
   
+ Advantage of Garbage Collection
+It makes java memory efficient because garbage collector removes the unreferenced objects from heap memory.
+It is automatically done by the garbage collector(a part of JVM) so we don't need to make extra efforts.
+
+How can an object be unreferenced?
+
+By nulling the reference
+By assigning a reference to another
+By anonymous object etc.
+
+
+1) By nulling a reference:
+Employee e=new Employee();  
+e=null;  
+2) By assigning a reference to another:
+Employee e1=new Employee();  
+Employee e2=new Employee();  
+e1=e2;//now the first object referred by e1 is available for garbage collection  
+3) By anonymous object:
+new Employee();  
+
+finalize() method
+The finalize() method is invoked each time before the object is garbage collected. This method can be used to perform cleanup processing. This method is defined in Object class as:
+
+protected void finalize(){} 
+ 
+Note: The Garbage collector of JVM collects only those objects that are created by new keyword. 
+So if you have created any object without new, you can use finalize method to perform cleanup processing (destroying remaining objects). 
+
+gc() method
+The gc() method is used to invoke the garbage collector to perform cleanup processing. The gc() is found in System and Runtime classes.
+
+public static void gc(){}  
+Note: Garbage collection is performed by a daemon thread called Garbage Collector(GC). This thread calls the finalize() method before object is garbage collected.
+
+Simple Example of garbage collection in java
+
+public class TestGarbage1{  
+ public void finalize(){System.out.println("object is garbage collected");}  
+ public static void main(String args[]){  
+  TestGarbage1 s1=new TestGarbage1();  
+  TestGarbage1 s2=new TestGarbage1();  
+  s1=null;  
+  s2=null;  
+  System.gc();  
+ }  
+ 
+ *************************************************************************************************
+ 
+ what is constructor chaining in Java?
+ 
+In Java, constructor chaining is a sequence of invoking constructors upon initializing an object.
+It is used when we want to invoke a number of constructors, one after another by using only an instance
+
+Constructor
+In Java, a constructor is the same as a method but the only difference is that the constructor has the same name as the class name. It is used to create an instance of the class. 
+It is called automatically when we create an object of the class. 
+It has no return type. Remember that a constructor cannot be abstract, final, synchronized, and static. We cannot override a constructor.
+
+
+There are two types of constructor in Java:
+
+Default Constructor (also known as a no-argument constructor)
+Parameterized Constructor
+
+Constructor Chaining
+In constructor chain, a constructor is called from another constructor in the same class this process is known as constructor chaining. 
+It occurs through inheritance. When we create an instance of a derived class, all the constructors of the inherited class (base class) are first invoked, after that the constructor of the calling class (derived class) is invoked.
+
+We can achieve constructor chaining in two ways:
+
+Within the same class: If the constructors belong to the same class, we use this
+From the base class: If the constructor belongs to different classes (parent and child classes), we use the super keyword to call the constructor from the base class.
+
+https://static.javatpoint.com/core/images/what-is-constructor-chaining-in-java.png
+
+Rules of Constructor Chaining
+
+An expression that uses this keyword must be the first line of the constructor.
+Order does not matter in constructor chaining.
+There must exist at least one constructor that does not use this
+
+Constructor Calling form another Constructor
+The calling of the constructor can be done in two ways:
+
+By using this() keyword: It is used when we want to call the current class constructor within the same class.
+By using super() keyword: It is used when we want to call the superclass constructor from the base class.
+
+Note: In the same constructor block, we cannot use this() and super() simultaneously.
+
+****************************************************************************************************
+
+Can we override and overload static methods in Java?
+
+Method Overloading
+It is also a feature of object-oriented programming. It is used to achieve compile-time polymorphism. It allows us to use the same method name but different signatures. 
+If a class has more than one method with the same name but a different method signature, it is known as method overloading.
+
+Can we overload a static method?
+The answer is Yes. We can overload static methods. But remember that the method signature must be different. For example, consider the following Java program.
+
+OverloadStaticMethodExample1.java
+
+public class OverloadStaticMethodExample1  
+{   
+//static method  
+public static void display()   
+{   
+System.out.println("Static method called.");   
+}   
+//overloaded static method  
+public static void display(int x)   
+{   
+System.out.println("An overloaded static method called.");   
+}   
+//main method  
+public static void main(String args[])   
+{   
+//calling static method by using the class name  
+OverloadStaticMethodExample1.display();   
+OverloadStaticMethodExample1.display(160);   
+}   
+}  
+Output:
+
+Static method called.
+An overloaded static method called.
+
+Can we override a static method?
+No, we cannot override static methods because method overriding is based on dynamic binding at runtime and the static methods are bonded using static binding at compile time. So, we cannot override static methods.
+
+The calling of method depends upon the type of object that calls the static method. It means:
+
+If we call a static method by using the parent class object, the original static method will be called from the parent class.
+If we call a static method by using the child class object, the static method of the child class will be called.
+
+public class OverloadStaticMethodExample3  
+{  
+public static void main(String args[])   
+{  
+ParentClass pc = new ChildClass();  
+//calling display() method by parent class object  
+pc.display();   
+}   
+}  
+//parent class  
+class ParentClass  
+{  
+//we cannot override the display() method  
+public static void display()  
+{  
+System.out.printf("display() method of the parent class.");  
+}  
+}  
+//child class  
+class ChildClass extends ParentClass  
+{  
+//the same method also exists in the ParentClass  
+//it does not override, actually it is method hiding  
+public static void display()  
+{  
+System.out.println("Overridden static method in Child Class in Java");  
+}  
+}  
+Output:
+
+display() method of the parent class.
